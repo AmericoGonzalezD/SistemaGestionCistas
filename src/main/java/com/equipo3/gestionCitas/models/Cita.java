@@ -1,13 +1,14 @@
 package com.equipo3.gestionCitas.models;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Cita {
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_cita")
     private Long idCita;
     @ManyToOne
     @JoinColumn(name = "id_cliente")
