@@ -7,7 +7,8 @@ import jakarta.persistence.*;
 public class Psicologo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_psicologo")
+    private Long idPsicologo;
     private String nombre;
     private String telefono ;
     private int edad;
@@ -20,7 +21,7 @@ public class Psicologo {
     }
 
     public Psicologo(Long id, String nombre, String telefono, int edad, String correo, String sexo, String cedulaProfesional) {
-        this.id = id;
+        this.idPsicologo = id;
         this.nombre = nombre;
         this.telefono = telefono;
         this.edad = edad;
@@ -29,12 +30,12 @@ public class Psicologo {
         this.cedulaProfesional = cedulaProfesional;
     }
 
-    public Long getId() {
-        return id;
+    public Long getIdPsicologo() {
+        return idPsicologo;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdPsicologo(Long id) {
+        this.idPsicologo = id;
     }
 
     public String getNombre() {
