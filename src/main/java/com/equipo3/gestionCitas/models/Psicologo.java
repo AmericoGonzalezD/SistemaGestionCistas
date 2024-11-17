@@ -2,6 +2,8 @@ package com.equipo3.gestionCitas.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "psicologo")
 public class Psicologo {
@@ -16,6 +18,14 @@ public class Psicologo {
     private String sexo;
     @Column(name = "cedula_profesional")
     private String cedulaProfesional;
+
+    @ManyToMany
+    @JoinTable(
+            name = "psicologo_especialidad",
+            joinColumns = @JoinColumn(name = "id_psicologo"),
+            inverseJoinColumns = @JoinColumn(name = "id_especialidad")
+    )
+    private List<Especialidad> especialidades;
 
     public Psicologo() {
     }
