@@ -16,4 +16,16 @@ public class Psicologo {
     @Column(name = "cedula_profesional")
     private String cedulaProfesional;
 
+    public Psicologo() {
+    }
+
+    public Psicologo(Long id, String nombre, String telefono, int edad, String correo, String sexo, String cedulaProfesional) {
+        this.id = id;
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.edad = edad;
+        this.correo = correo;
+        this.sexo = sexo;
+        this.cedulaProfesional = cedulaProfesional;
+    }
 }
