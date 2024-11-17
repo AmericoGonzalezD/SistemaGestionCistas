@@ -17,6 +17,20 @@ public class Cliente {
     @Column(name="estado_civil")
     private String estadoCivil ;
 
+    public Cliente() {
+    }
+
+    public Cliente(Long id, String nombre, String telefono, String correo, String direccion, int edad, String sexo, String estadoCivil) {
+        this.id = id;
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.correo = correo;
+        this.direccion = direccion;
+        this.edad = edad;
+        this.sexo = sexo;
+        this.estadoCivil = estadoCivil;
+    }
+
     public Long getId() {
         return id;
     }
