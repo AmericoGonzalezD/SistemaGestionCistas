@@ -44,4 +44,14 @@ public class ClienteController {
         clienteRepository.deleteById(idCliente);
         return ResponseEntity.noContent().build();//respuesta de que no hay contenido
     }
+    @CrossOrigin
+    @PutMapping("/{idCliente}")
+    public ResponseEntity<Cliente> actualizarCliente(@PathVariable Long idCliente, @RequestBody Cliente cliente){
+        if(!clienteRepository.existsById(idCliente)){
+            return ResponseEntity.notFound().build();//si no existe el cliente se devuelve la respuesta de notFound
+        }
+        cliente.setId(idCliente);//al cliente que me dieron le asigno el id que me pasan debido a que esos datos no tiene un id dado
+        Cliente clienteGuardado = clienteRepository.save(cliente);//actualiza el valor
+        return ResponseEntity.ok(clienteGuardado);
+    }
 }
