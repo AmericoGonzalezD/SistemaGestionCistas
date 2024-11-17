@@ -34,4 +34,14 @@ public class ClienteController {
         Cliente clienteGuardado = clienteRepository.save(cliente);//lo que resivo lo guardo y le paso la entidad recibida
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteGuardado);//respuesta
     }
+
+    @CrossOrigin
+    @DeleteMapping("/{idCliente}")
+    public ResponseEntity<Cliente> borrarCliente(@PathVariable Long idCliente){
+        if(!clienteRepository.existsById(idCliente)){//compruebo si existe el cliente
+            return ResponseEntity.notFound().build();//si no existe el cliente se devuelve una respuesta de notFound
+        }
+        clienteRepository.deleteById(idCliente);
+        return ResponseEntity.noContent().build();//respuesta de que no hay contenido
+    }
 }
