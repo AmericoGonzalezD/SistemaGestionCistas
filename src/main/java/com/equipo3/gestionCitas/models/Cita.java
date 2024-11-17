@@ -20,4 +20,17 @@ public class Cita {
     private LocalDate fecha;
     private LocalTime hora;
     private String estado;
+
+    public Cita() {
+    }
+
+    public Cita(Long idCita, Cliente cliente, Psicologo psicologo, String nombre, LocalDate fecha, LocalTime hora, String estado) {
+        this.idCita = idCita;
+        this.cliente = cliente;
+        this.psicologo = psicologo;
+        this.nombre = nombre;
+        this.fecha = fecha;
+        this.hora = hora;
+        this.estado = estado;
+    }
 }
