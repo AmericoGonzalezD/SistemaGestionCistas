@@ -3,6 +3,7 @@ package com.equipo3.gestionCitas.models;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "especialidad")
 public class Especialidad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
