@@ -3,6 +3,7 @@ package com.equipo3.gestionCitas.controllers;
 import com.equipo3.gestionCitas.models.Cliente;
 import com.equipo3.gestionCitas.repositories.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,5 +26,12 @@ public class ClienteController {
     public ResponseEntity<Cliente>  obtenerClientePorId(@PathVariable Long idCliente){//tiene en cuenta que puede que no se encuentre el elemento con responseEntity
        Optional<Cliente> cliente= clienteRepository.findById(idCliente);
        return cliente.isPresent()?ResponseEntity.ok(cliente.get()):ResponseEntity.notFound().build();
+    }
+
+    @CrossOrigin
+    @PostMapping
+    public ResponseEntity<Cliente> crearCliente(@RequestBody Cliente cliente){//los dados los reccibe en el cuerpo de la peticion con @RequestBody
+        Cliente clienteGuardado = clienteRepository.save(cliente);//lo que resivo lo guardo y le paso la entidad recibida
+        return ResponseEntity.status(HttpStatus.CREATED).body(clienteGuardado);//respuesta
     }
 }
