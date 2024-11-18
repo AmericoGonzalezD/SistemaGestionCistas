@@ -6,13 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/especialidad")
 public class EspecialidadController {
     @Autowired
     private EspecialidadRepository especialidadRepository;
 
-
+    @CrossOrigin
+    @GetMapping
+    public List<Especialidad> obtenerEspecialidades(){
+        return especialidadRepository.findAll();
+    }
 
     @CrossOrigin
     @PostMapping
