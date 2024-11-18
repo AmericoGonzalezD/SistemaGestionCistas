@@ -2,23 +2,54 @@ package com.equipo3.gestionCitas.models;
 
 import jakarta.persistence.*;
 
-public class Cliente extends Usuario{
+import java.util.List;
+
+@Entity
+@Table(name = "CLIENTE")
+public class Cliente {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_cliente")
-    private Long idCliente;
-
-    @Column(name = "direccion", length = 60)
-    private String direccion;
-
-    @Column(name = "estado_civil", length = 15)
-    private String estadoCivil;
-
-    // Relación OneToOne con la tabla Usuario
+    private Long id;
     @OneToOne
     @MapsId
-    @JoinColumn(name = "id_cliente") // Llave foránea que apunta a Usuario
+    @JoinColumn(name = "id_cliente")
     private Usuario usuario;
 
+    private String direccion;
+    private String estadoCivil;
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Cita> citas;
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getEstadoCivil() {
+        return estadoCivil;
+    }
+
+    public void setEstadoCivil(String estadoCivil) {
+        this.estadoCivil = estadoCivil;
+    }
+
+    public List<Cita> getCitas() {
+        return citas;
+    }
+
+    public void setCitas(List<Cita> citas) {
+        this.citas = citas;
+    }
 }

@@ -5,47 +5,47 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "psicologo")
-public class Psicologo extends Usuario{
+@Table(name = "PSICOLOGO")
+public class Psicologo {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_psicologo")
-    private Long idPsicologo;
+    private Long id;
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "id_psicologo")
+    private Usuario usuario;
+
     @Column(name = "cedula_profesional")
     private String cedulaProfesional;
 
-    // Relación ManyToMany con la tabla Especialidad
-    @ManyToMany
-    @JoinTable(
-            name = "psicologo_especialidad", // Tabla intermedia
-            joinColumns = @JoinColumn(name = "id_psicologo"), // Llave foránea a Psicologo
-            inverseJoinColumns = @JoinColumn(name = "id_especialidad") // Llave foránea a Especialidad
-    )
-    private List<Especialidad> especialidades;
-
-    // Relación OneToOne con la tabla Usuario
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "id_psicologo") // Llave foránea que apunta a Usuario
-    private Usuario usuario;
-
-    public Psicologo() {
+    public Long getId() {
+        return id;
     }
 
-    public Psicologo(Long idUsuario, String nombre, String telefono, String direccion, int edad, String sexo, String password, Rol rol, Long idPsicologo, String cedulaProfesional, List<Especialidad> especialidades, Usuario usuario) {
-        super(idUsuario, nombre, telefono, direccion, edad, sexo, password, rol);
-        this.idPsicologo = idPsicologo;
-        this.cedulaProfesional = cedulaProfesional;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @OneToMany(mappedBy = "psicologo")
+    private List<PsicologoEspecialidad> especialidades;
+
+    @OneToMany(mappedBy = "psicologo")
+    private List<Cita> citas;
+
+    public List<Cita> getCitas() {
+        return citas;
+    }
+
+    public void setCitas(List<Cita> citas) {
+        this.citas = citas;
+    }
+
+    public List<PsicologoEspecialidad> getEspecialidades() {
+        return especialidades;
+    }
+
+    public void setEspecialidades(List<PsicologoEspecialidad> especialidades) {
         this.especialidades = especialidades;
-        this.usuario = usuario;
-    }
-
-    public Long getIdPsicologo() {
-        return idPsicologo;
-    }
-
-    public void setIdPsicologo(Long idPsicologo) {
-        this.idPsicologo = idPsicologo;
     }
 
     public String getCedulaProfesional() {
@@ -54,14 +54,6 @@ public class Psicologo extends Usuario{
 
     public void setCedulaProfesional(String cedulaProfesional) {
         this.cedulaProfesional = cedulaProfesional;
-    }
-
-    public List<Especialidad> getEspecialidades() {
-        return especialidades;
-    }
-
-    public void setEspecialidades(List<Especialidad> especialidades) {
-        this.especialidades = especialidades;
     }
 
     public Usuario getUsuario() {
