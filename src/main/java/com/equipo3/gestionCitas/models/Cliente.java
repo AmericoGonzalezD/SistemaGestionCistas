@@ -2,97 +2,25 @@ package com.equipo3.gestionCitas.models;
 
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "cliente")
 public class Cliente {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_cliente")
-    private Long idCliente ;//llave primaria
-    private String nombre ;
-    private String telefono ;
-    private String correo ;
-    private String direccion ;
-    private int edad ;
-    private String sexo;
-    @Column(name="estado_civil")
-    private String estadoCivil ;
+    private Long idCliente;
 
-    public Cliente() {
-    }
+    @Column(name = "direccion", length = 60)
+    private String direccion;
 
-    public Cliente(Long id, String nombre, String telefono, String correo, String direccion, int edad, String sexo, String estadoCivil) {
-        this.idCliente = id;
-        this.nombre = nombre;
-        this.telefono = telefono;
-        this.correo = correo;
-        this.direccion = direccion;
-        this.edad = edad;
-        this.sexo = sexo;
-        this.estadoCivil = estadoCivil;
-    }
+    @Column(name = "estado_civil", length = 15)
+    private String estadoCivil;
 
-    public Long getId() {
-        return idCliente;
-    }
+    @Column(name = "tipo_suscripcion", length = 20)
+    private String tipoSuscripcion; // Ejemplo de campo adicional
 
-    public void setId(Long id) {
-        this.idCliente = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    public int getEdad() {
-        return edad;
-    }
-
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
-
-    public String getSexo() {
-        return sexo;
-    }
-
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
-    }
-
-    public String getEstadoCivil() {
-        return estadoCivil;
-    }
-
-    public void setEstadoCivil(String estadoCivil) {
-        this.estadoCivil = estadoCivil;
-    }
+    // Relación OneToOne con la tabla Usuario
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "id_cliente") // Llave foránea que apunta a Usuario
+    private Usuario usuario;
 }
