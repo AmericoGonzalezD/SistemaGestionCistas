@@ -6,7 +6,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "psicologo")
-public class Psicologo {
+public class Psicologo extends Usuario{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_psicologo")
@@ -32,4 +32,43 @@ public class Psicologo {
     public Psicologo() {
     }
 
+    public Psicologo(Long idUsuario, String nombre, String telefono, String direccion, int edad, String sexo, String password, Rol rol, Long idPsicologo, String cedulaProfesional, List<Especialidad> especialidades, Usuario usuario) {
+        super(idUsuario, nombre, telefono, direccion, edad, sexo, password, rol);
+        this.idPsicologo = idPsicologo;
+        this.cedulaProfesional = cedulaProfesional;
+        this.especialidades = especialidades;
+        this.usuario = usuario;
+    }
+
+    public Long getIdPsicologo() {
+        return idPsicologo;
+    }
+
+    public void setIdPsicologo(Long idPsicologo) {
+        this.idPsicologo = idPsicologo;
+    }
+
+    public String getCedulaProfesional() {
+        return cedulaProfesional;
+    }
+
+    public void setCedulaProfesional(String cedulaProfesional) {
+        this.cedulaProfesional = cedulaProfesional;
+    }
+
+    public List<Especialidad> getEspecialidades() {
+        return especialidades;
+    }
+
+    public void setEspecialidades(List<Especialidad> especialidades) {
+        this.especialidades = especialidades;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
 }
