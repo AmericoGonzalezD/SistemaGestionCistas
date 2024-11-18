@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/especialidad")
@@ -18,6 +19,12 @@ public class EspecialidadController {
     @GetMapping
     public List<Especialidad> obtenerEspecialidades(){
         return especialidadRepository.findAll();
+    }
+    @CrossOrigin
+    @GetMapping("/{idEspecialidad}")
+    public ResponseEntity<Especialidad> obtenerEspecialidadById(@PathVariable Long idEspecialidad){
+        Optional<Especialidad> especialidad = especialidadRepository.findById(idEspecialidad);
+        return especialidad.isPresent() ? ResponseEntity.ok().body(especialidad.get()) : ResponseEntity.notFound().build();
     }
 
     @CrossOrigin
