@@ -44,4 +44,14 @@ public class EspecialidadController {
         return ResponseEntity.ok(especialidadActualizada);
     }
 
+    @CrossOrigin
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Especialidad> eliminarEspecialidad(@PathVariable Long id){
+        if(!especialidadRepository.existsById(id)){
+            return ResponseEntity.notFound().build();
+        }
+        especialidadRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
+
 }
