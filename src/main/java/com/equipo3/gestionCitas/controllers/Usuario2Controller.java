@@ -76,5 +76,17 @@ import java.util.Optional;
         usuarioRepository.deleteById(idUsuario);
         return ResponseEntity.noContent().build();//respuesta de que no hay contenido
     }
+    @CrossOrigin
+    @PutMapping("/{idUsuario}/nombre")
+    public ResponseEntity<Usuario> actualizarCliente(@PathVariable Long idUsuario, @RequestBody Usuario usuarioNombre){
+        if(!usuarioRepository.existsById(idUsuario)){
+            return ResponseEntity.notFound().build();//si no existe el usuario se devuelve la respuesta de notFound
+        }
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+        //usuario.setIdUsuario(idUsuario);//al usuario que me dieron le asigno el id que me pasan debido a que esos datos no tiene un id dado
+        usuario.setNombre(usuarioNombre.getNombre());
+        Usuario clienteActualizado = usuarioRepository.save(usuario);//actualiza el valor
+        return ResponseEntity.ok(clienteActualizado);
+    }
     }
 
