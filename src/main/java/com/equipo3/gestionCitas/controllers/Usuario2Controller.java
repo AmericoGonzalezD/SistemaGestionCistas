@@ -66,5 +66,15 @@ import java.util.Optional;
     public List<Usuario> obtenerTodosLosClientes(){
         return usuarioRepository.findAll();
     }
+    @CrossOrigin
+    @DeleteMapping("/{idUsuario}")
+    public ResponseEntity<Usuario> borrarCliente(@PathVariable Long idUsuario){
+
+        if(!usuarioRepository.existsById(idUsuario)){//compruebo si existe el cliente
+            return ResponseEntity.notFound().build();//si no existe el cliente se devuelve una respuesta de notFound
+        }
+        usuarioRepository.deleteById(idUsuario);
+        return ResponseEntity.noContent().build();//respuesta de que no hay contenido
+    }
     }
 
