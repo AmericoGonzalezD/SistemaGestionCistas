@@ -33,5 +33,15 @@ public class EspecialidadController {
         Especialidad especialidadGuardada=especialidadRepository.save(especialidad);
         return ResponseEntity.ok(especialidadGuardada);
     }
+    @CrossOrigin
+    @PutMapping("/{id}")
+    public ResponseEntity<Especialidad> actualizarEspecialidad(@PathVariable Long id,@RequestBody Especialidad especialidad) {
+        if(!especialidadRepository.existsById(id)){
+            return ResponseEntity.notFound().build();
+        }
+        especialidad.setIdEspecialidad(id);
+        Especialidad especialidadActualizada=especialidadRepository.save(especialidad);
+        return ResponseEntity.ok(especialidadActualizada);
+    }
 
 }
