@@ -15,6 +15,8 @@ public class Usuario {
     private int edad ;
     private String sexo;
     private String password ;
+    @Enumerated(EnumType.STRING) // Esta anotación es importante para mapear el ENUM correctamente
+    @Column(name = "rol")
     private Rol rol;
 
     // Enumeración para los roles de usuario
