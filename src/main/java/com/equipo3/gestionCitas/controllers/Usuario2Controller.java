@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -61,10 +62,9 @@ import java.util.Optional;
             return ResponseEntity.ok(usuarioGuardado);
         }
     @CrossOrigin//puedo usar este endpoint por servicos externos (frontend)
-    @GetMapping("/{idUsuario}")//envia una variable mediante la uri
-    public ResponseEntity<Usuario>  obtenerClientePorId(@PathVariable Long idUsuario){//tiene en cuenta que puede que no se encuentre el elemento con responseEntity
-        Optional<Usuario> usuario= usuarioRepository.findById(idUsuario);
-        return usuario.isPresent()?ResponseEntity.ok(usuario.get()):ResponseEntity.notFound().build();
+    @GetMapping("/all")//porque se quiere obtener todas
+    public List<Usuario> obtenerTodosLosClientes(){
+        return usuarioRepository.findAll();
     }
     }
 

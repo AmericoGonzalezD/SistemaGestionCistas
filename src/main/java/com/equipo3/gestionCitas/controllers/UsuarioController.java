@@ -1,5 +1,5 @@
 package com.equipo3.gestionCitas.controllers;
-/*
+
 import com.equipo3.gestionCitas.models.Usuario;
 import com.equipo3.gestionCitas.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,4 +55,4 @@ public class UsuarioController {
         Usuario clienteGuardado = usuarioRepository.save(usuario);//actualiza el valor
         return ResponseEntity.ok(clienteGuardado);
     }
-}*/
+}

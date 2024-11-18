@@ -25,7 +25,7 @@ public class Cita {
     private LocalDate fecha;
     private LocalTime hora;
 
-    private String estado;
+    private String estado; // Estados: "Pendiente", "Confirmada", "Cancelada", etc.
 
     @ManyToOne // Relación muchos a uno con Usuario
     @JoinColumn(name = "usuario_id")
