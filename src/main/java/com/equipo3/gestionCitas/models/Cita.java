@@ -1,5 +1,6 @@
 package com.equipo3.gestionCitas.models;
 
+import com.equipo3.gestionCitas.DTO.CitaDTO;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -79,4 +80,5 @@ public class Cita {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
 }

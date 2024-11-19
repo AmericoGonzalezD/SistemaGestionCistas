@@ -1,5 +1,6 @@
 package com.equipo3.gestionCitas.controllers;
 
+import com.equipo3.gestionCitas.DTO.CitaDTO;
 import com.equipo3.gestionCitas.models.Cita;
 import com.equipo3.gestionCitas.models.Cliente;
 import com.equipo3.gestionCitas.models.Psicologo;
@@ -16,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/citas")
@@ -30,11 +32,43 @@ public class CitaController {
     @Autowired
     private PsicologoRepository psicologoRepository;
 
-    @CrossOrigin//puedo usar este endpoint por servicos externos (frontend)
-    @GetMapping()//porque se quiere obtener todas
-    public List<Cita> obtenerTodosLasCitas(){
-        return citaRepository.findAll();
+    @CrossOrigin // Permite que este endpoint sea accesible desde servicios externos
+    @GetMapping // Obtiene todas las citas
+    public List<CitaDTO> obtenerTodosLasCitas() {
+        List<Cita> citas = citaRepository.findAll(); // Obtiene todas las citas
+        return citas.stream() // Convierte la lista de Cita a CitaDTO
+                .map(this::convertirACitaDTO) // Transforma cada Cita en un CitaDTO
+                .toList();
     }
+
+    private CitaDTO convertirACitaDTO(Cita cita) {
+        return new CitaDTO(
+                cita.getIdCita(),
+                cita.getCliente().getUsuario().getNombre(),
+                cita.getPsicologo().getUsuario().getNombre(),
+                cita.getFecha(),
+                cita.getHora(),
+                cita.getEstado()
+        );
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<CitaDTO> obtenerCitaPorId(@PathVariable Long id) {
+        Optional<Cita> cita = citaRepository.findById(id);
+        if (cita.isPresent()) {
+            Cita entidad = cita.get();
+            CitaDTO dto = new CitaDTO(
+                    entidad.getIdCita(),
+                    entidad.getCliente().getUsuario().getNombre(),
+                    entidad.getPsicologo().getUsuario().getNombre(),
+                    entidad.getFecha(),
+                    entidad.getHora(),
+                    entidad.getEstado()
+            );
+            return ResponseEntity.ok(dto);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> crearCita(

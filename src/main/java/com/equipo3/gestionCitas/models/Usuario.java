@@ -1,5 +1,6 @@
 package com.equipo3.gestionCitas.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;

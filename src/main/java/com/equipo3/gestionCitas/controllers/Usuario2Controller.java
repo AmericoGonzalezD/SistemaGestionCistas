@@ -1,6 +1,7 @@
 package com.equipo3.gestionCitas.controllers;
 
 
+import com.equipo3.gestionCitas.DTO.UsuarioDTO;
 import com.equipo3.gestionCitas.models.Cliente;
 import com.equipo3.gestionCitas.models.Psicologo;
 import com.equipo3.gestionCitas.models.Usuario;
@@ -61,11 +62,22 @@ import java.util.Optional;
 
             return ResponseEntity.ok(usuarioGuardado);
         }
-    @CrossOrigin//puedo usar este endpoint por servicos externos (frontend)
-    @GetMapping("/all")//porque se quiere obtener todas
-    public List<Usuario> obtenerTodosLosClientes(){
-        return usuarioRepository.findAll();
+    @CrossOrigin
+    @GetMapping
+    public List<UsuarioDTO> obtenerTodosLosClientes() {
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        return usuarios.stream()
+                .map(this::convertirAUsuarioDTO) // Convierte cada Usuario a UsuarioDTO
+                .toList();
     }
+    @CrossOrigin
+    @GetMapping("/{idUsuario}")
+    public ResponseEntity<UsuarioDTO> obtenerClientePorId(@PathVariable Long idUsuario) {
+        Optional<Usuario> usuario = usuarioRepository.findById(idUsuario);
+        return usuario.map(value -> ResponseEntity.ok(convertirAUsuarioDTO(value)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @CrossOrigin
     @DeleteMapping("/{idUsuario}")
     public ResponseEntity<Usuario> borrarCliente(@PathVariable Long idUsuario){
@@ -87,6 +99,18 @@ import java.util.Optional;
         usuario.setNombre(usuarioNombre.getNombre());
         Usuario clienteActualizado = usuarioRepository.save(usuario);//actualiza el valor
         return ResponseEntity.ok(clienteActualizado);
+    }
+
+    private UsuarioDTO convertirAUsuarioDTO(Usuario usuario) {
+        return new UsuarioDTO(
+                usuario.getIdUsuario(),
+                usuario.getNombre(),
+                usuario.getCorreo(),
+                usuario.getTelefono(),
+                usuario.getEdad(),
+                usuario.getSexo(),
+                usuario.getRol()
+        );
     }
     }
 
