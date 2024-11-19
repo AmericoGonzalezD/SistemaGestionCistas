@@ -66,5 +66,49 @@ public class CitaController {
             citaRepository.deleteById(idCita);
             return ResponseEntity.noContent().build();
     }
+    @CrossOrigin
+    @PutMapping("/{idCita}")
+    public ResponseEntity<String> actualizarCita(
+            @PathVariable Long idCita,
+            @RequestParam Long idPsicologo,
+            @RequestParam String fecha,
+            @RequestParam String hora) {
+
+        // Validar existencia de la cita
+        Cita citaExistente = citaRepository.findById(idCita)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cita no encontrada"));
+
+        // Validar existencia del psicólogo
+        Psicologo psicologo = psicologoRepository.findById(idPsicologo)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Psicólogo no encontrado"));
+
+        // Actualizar los campos de la cita
+        citaExistente.setPsicologo(psicologo);
+        citaExistente.setFecha(LocalDate.parse(fecha));
+        citaExistente.setHora(LocalTime.parse(hora));
+
+        // Guardar la cita actualizada
+        citaRepository.save(citaExistente);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Cita actualizada correctamente.");
+    }
+    @CrossOrigin
+    @PutMapping("/{idCita}/estado")
+    public ResponseEntity<String> actualizarEstadoCita(
+            @PathVariable Long idCita,
+            @RequestParam String estado) {
+
+        // Validar existencia de la cita
+        Cita citaExistente = citaRepository.findById(idCita)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cita no encontrada"));
+
+        // Actualizar el estado de la cita
+        citaExistente.setEstado(estado);
+
+        // Guardar la cita con el nuevo estado
+        citaRepository.save(citaExistente);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Estado de la cita actualizado correctamente.");
+    }
 
 }
