@@ -8,6 +8,7 @@ import com.equipo3.gestionCitas.models.Usuario;
 import com.equipo3.gestionCitas.repositories.ClienteRepository;
 import com.equipo3.gestionCitas.repositories.PsicologoRepository;
 import com.equipo3.gestionCitas.repositories.UsuarioRepository;
+import com.equipo3.gestionCitas.repositories.UsuarioRolRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,8 @@ import java.util.Optional;
 
         @Autowired
         private UsuarioRepository usuarioRepository;
+    @Autowired
+    private UsuarioRolRepository usuarioRolRepository;
 
         @Autowired
         private PsicologoRepository psicologoRepository;
