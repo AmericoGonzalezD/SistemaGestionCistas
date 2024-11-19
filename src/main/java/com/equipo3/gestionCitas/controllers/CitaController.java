@@ -3,6 +3,7 @@ package com.equipo3.gestionCitas.controllers;
 import com.equipo3.gestionCitas.models.Cita;
 import com.equipo3.gestionCitas.models.Cliente;
 import com.equipo3.gestionCitas.models.Psicologo;
+import com.equipo3.gestionCitas.models.Usuario;
 import com.equipo3.gestionCitas.repositories.CitaRepository;
 import com.equipo3.gestionCitas.repositories.ClienteRepository;
 import com.equipo3.gestionCitas.repositories.PsicologoRepository;
@@ -14,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/citas")
@@ -28,6 +30,11 @@ public class CitaController {
     @Autowired
     private PsicologoRepository psicologoRepository;
 
+    @CrossOrigin//puedo usar este endpoint por servicos externos (frontend)
+    @GetMapping()//porque se quiere obtener todas
+    public List<Cita> obtenerTodosLasCitas(){
+        return citaRepository.findAll();
+    }
     @CrossOrigin
     @PostMapping
     public ResponseEntity<String> crearCita(
