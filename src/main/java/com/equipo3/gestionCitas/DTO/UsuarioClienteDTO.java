@@ -1,6 +1,6 @@
 package com.equipo3.gestionCitas.DTO;
 
-public class UsuarioDTO {
+public class UsuarioClienteDTO {
     private Long idUsuario;
     private String nombre;
     private String correo;
@@ -8,10 +8,13 @@ public class UsuarioDTO {
     private int edad;
     private String sexo;
     private String rol;
+    private String direccion; // Nuevo campo
+    private String estadoCivil;
 
+    public UsuarioClienteDTO() {
+    }
 
-
-    public UsuarioDTO(Long idUsuario, String nombre, String correo, String telefono, int edad, String sexo, String rol) {
+    public UsuarioClienteDTO(Long idUsuario, String nombre, String correo, String telefono, int edad, String sexo, String rol, String direccion, String estadoCivil) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.correo = correo;
@@ -19,8 +22,9 @@ public class UsuarioDTO {
         this.edad = edad;
         this.sexo = sexo;
         this.rol = rol;
+        this.direccion = direccion;
+        this.estadoCivil = estadoCivil;
     }
-
 
     public Long getIdUsuario() {
         return idUsuario;
@@ -77,5 +81,20 @@ public class UsuarioDTO {
     public void setRol(String rol) {
         this.rol = rol;
     }
-// Getters y setters (opcional si usas lombok con @Data)
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getEstadoCivil() {
+        return estadoCivil;
+    }
+
+    public void setEstadoCivil(String estadoCivil) {
+        this.estadoCivil = estadoCivil;
+    }
 }

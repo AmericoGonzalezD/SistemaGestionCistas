@@ -1,5 +1,8 @@
 package com.equipo3.gestionCitas.controllers;
 
+import com.equipo3.gestionCitas.DTO.CitaDTO;
+import com.equipo3.gestionCitas.DTO.PsicologoDTO;
+import com.equipo3.gestionCitas.models.Cita;
 import com.equipo3.gestionCitas.models.Especialidad;
 import com.equipo3.gestionCitas.models.Psicologo;
 import com.equipo3.gestionCitas.models.PsicologoEspecialidad;
@@ -12,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -46,6 +50,25 @@ public class PsicologoController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Especialidad asignada correctamente.");
     }
+    @CrossOrigin // Permite que este endpoint sea accesible desde servicios externos
+    @GetMapping // Obtiene todos los psicólogos
+    public List<PsicologoDTO> obtenerTodosLosPsicologos() {
+        List<Psicologo> psicologos = psicologoRepository.findAll(); // Obtiene todos los psicólogos
+        return psicologos.stream() // Convierte la lista de Psicólogo a PsicologoDTO
+                .map(this::convertirPsicologoDTO) // Transforma cada Psicólogo en un PsicologoDTO
+                .toList();
+    }
+
+    private PsicologoDTO convertirPsicologoDTO(Psicologo psicologo) {
+        // Se accede al nombre del usuario asociado al psicólogo
+        String nombrePsicologo = psicologo.getUsuario() != null ? psicologo.getUsuario().getNombre() : "Desconocido";
+        return new PsicologoDTO(
+                psicologo.getId(),
+                psicologo.getCedulaProfesional(),
+                nombrePsicologo // Incluir nombre del psicólogo
+        );
+    }
+
 }
 
 

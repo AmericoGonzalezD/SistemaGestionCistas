@@ -17,6 +17,16 @@ public class Cliente {
     private Usuario usuario;
 
     private String direccion;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     private String estadoCivil;
 
     @OneToMany(mappedBy = "cliente")

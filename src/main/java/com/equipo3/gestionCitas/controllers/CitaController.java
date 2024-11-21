@@ -1,6 +1,7 @@
 package com.equipo3.gestionCitas.controllers;
 
 import com.equipo3.gestionCitas.DTO.CitaDTO;
+import com.equipo3.gestionCitas.DTO.RespuestasCitasDTO;
 import com.equipo3.gestionCitas.models.Cita;
 import com.equipo3.gestionCitas.models.Cliente;
 import com.equipo3.gestionCitas.models.Psicologo;
@@ -8,6 +9,7 @@ import com.equipo3.gestionCitas.models.Usuario;
 import com.equipo3.gestionCitas.repositories.CitaRepository;
 import com.equipo3.gestionCitas.repositories.ClienteRepository;
 import com.equipo3.gestionCitas.repositories.PsicologoRepository;
+import com.equipo3.gestionCitas.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,8 @@ public class CitaController {
 
     @Autowired
     private PsicologoRepository psicologoRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @CrossOrigin // Permite que este endpoint sea accesible desde servicios externos
     @GetMapping // Obtiene todas las citas
@@ -107,13 +111,15 @@ public class CitaController {
             citaRepository.deleteById(idCita);
             return ResponseEntity.noContent().build();
     }
+
     @CrossOrigin
     @PutMapping("/{idCita}")
     public ResponseEntity<String> actualizarCita(
             @PathVariable Long idCita,
             @RequestParam Long idPsicologo,
             @RequestParam String fecha,
-            @RequestParam String hora) {
+            @RequestParam String hora,
+            @RequestParam String estado) {  // Agregado el parámetro de estado
 
         // Validar existencia de la cita
         Cita citaExistente = citaRepository.findById(idCita)
@@ -127,12 +133,14 @@ public class CitaController {
         citaExistente.setPsicologo(psicologo);
         citaExistente.setFecha(LocalDate.parse(fecha));
         citaExistente.setHora(LocalTime.parse(hora));
+        citaExistente.setEstado(estado);  // Actualización del estado de la cita
 
         // Guardar la cita actualizada
         citaRepository.save(citaExistente);
 
         return ResponseEntity.status(HttpStatus.OK).body("Cita actualizada correctamente.");
     }
+
     @CrossOrigin
     @PutMapping("/{idCita}/estado")
     public ResponseEntity<String> actualizarEstadoCita(
@@ -151,5 +159,92 @@ public class CitaController {
 
         return ResponseEntity.status(HttpStatus.OK).body("Estado de la cita actualizado correctamente.");
     }
+
+              // Obtener citas filtradas por el usuario autenticado
+        @CrossOrigin
+        @GetMapping("/mis-citas")
+        public ResponseEntity<List<CitaDTO>> obtenerCitasPorUsuario(@RequestParam String correo) {
+            // Buscar al usuario por correo
+            Optional<Cliente> clienteOpt = clienteRepository.findByUsuarioCorreo(correo);
+            Optional<Psicologo> psicologoOpt = psicologoRepository.findByUsuarioCorreo(correo);
+
+            List<Cita> citas;
+
+            if (clienteOpt.isPresent()) {
+                // Si es un cliente, obtener sus citas
+                Cliente cliente = clienteOpt.get();
+                citas = citaRepository.findByCliente(cliente);
+            } else if (psicologoOpt.isPresent()) {
+                // Si es un psicólogo, obtener sus citas
+                Psicologo psicologo = psicologoOpt.get();
+                citas = citaRepository.findByPsicologo(psicologo);
+            } else {
+                // Si el usuario no es cliente ni psicólogo, devolver un error
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
+
+            // Convertir las citas a DTO
+            List<CitaDTO> citaDTOs = citas.stream()
+                    .map(this::convertirACitaDTO)
+                    .toList();
+
+            return ResponseEntity.ok(citaDTOs);
+        }
+    @CrossOrigin
+    @GetMapping("/cliente") // Obtiene todas las citas del usuario que ha iniciado sesión
+    public List<CitaDTO> obtenerCitasPorUsuario(@RequestParam Long idCliente) {
+        // Busca al cliente por su ID
+        Cliente cliente = clienteRepository.findById(idCliente)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente no encontrado"));
+
+        // Obtiene las citas del cliente
+        List<Cita> citas = citaRepository.findByCliente(cliente);
+
+        // Convierte las citas a DTO
+        return citas.stream()
+                .map(this::convertirACitaDTO)
+                .toList();
+    }
+    /*
+    @CrossOrigin
+    @GetMapping("/psicologo") // Obtiene todas las citas del psicólogo que ha iniciado sesión
+    public List<CitaDTO> obtenerCitasPorPsicologo(@RequestParam Long idPsicologo) {
+        // Busca al psicólogo por su ID
+        Psicologo psicologo = psicologoRepository.findById(idPsicologo)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Psicólogo no encontrado"));
+
+        // Obtiene las citas del psicólogo
+        List<Cita> citas = citaRepository.findByPsicologo(psicologo);
+
+        // Convierte las citas a DTO
+        return citas.stream()
+                .map(this::convertirACitaDTO)
+                .toList();
+    }*/
+    @CrossOrigin
+    @GetMapping("/psicologo")
+    public RespuestasCitasDTO obtenerCitasPorPsicologo(@RequestParam Long idPsicologo) {
+        // Busca al psicólogo por su ID
+        Psicologo psicologo = psicologoRepository.findById(idPsicologo)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Psicólogo no encontrado"));
+
+        // Obtiene las citas del psicólogo
+        List<Cita> citas = citaRepository.findByPsicologo(psicologo);
+
+        // Convierte las citas a DTO
+        List<CitaDTO> citaDTOs = citas.stream()
+                .map(this::convertirACitaDTO)
+                .toList();
+
+        // Devuelve un DTO con las citas y el idPsicologo
+        return new RespuestasCitasDTO(idPsicologo, citaDTOs);
+    }
+
+
+
+
+    // Métodos existentes...
+
+
 
 }
