@@ -106,7 +106,7 @@ public class CitaController {
     @DeleteMapping("/{idCita}")
     public ResponseEntity<String> eliminarCita(@PathVariable Long idCita) {
             if(!citaRepository.existsById(idCita)) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El cita no existe");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("La cita no existe");
             }
             citaRepository.deleteById(idCita);
             return ResponseEntity.noContent().build();

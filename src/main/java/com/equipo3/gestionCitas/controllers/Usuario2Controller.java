@@ -35,6 +35,7 @@ import java.util.Optional;
         @Autowired
         private CitaRepository citaRepository;
 
+        @CrossOrigin
         @PostMapping("/editar")
         @Transactional
         public ResponseEntity<?> registrarUsuario(@RequestBody Usuario usuario, @RequestParam(required = false) String cedulaProfesional,
@@ -176,14 +177,12 @@ import java.util.Optional;
         if (usuarioOpt.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no encontrado.");
         }
-
         Usuario usuario = usuarioOpt.get();
 
-        // Validar la contraseña (asegúrate de que la contraseña está almacenada correctamente)
+        // Validar la contraseña (asegurar que la contraseña está almacenada correctamente)
         if (!usuario.getPassword().equals(password)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Contraseña incorrecta.");
         }
-
         // Devolver la información del rol
         Map<String, String> response = new HashMap<>();
         response.put("rol", usuario.getRol());
